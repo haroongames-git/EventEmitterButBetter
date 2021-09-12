@@ -1,6 +1,6 @@
 const newEvents = require('./Events.js')
 
-const client = new newEvents(['joystick'])
+const controller = new newEvents(['joystick'])
 
 /* TODO: Make no single argument, so you don't have to do:
   const direction = args[0];
@@ -8,18 +8,18 @@ const client = new newEvents(['joystick'])
 
   for every argument emitted
 */
-client.on('joystick', (args) => {
+controller.on('joystick', (args) => {
   const direction = args[0];
   const angle = args[1];
   console.log(`The joystick is facing ${args[0]}, at exactly ${args[1]}.`)
 })
 
-// Let's say someone figures out that it's EventEmitter, and uses client#emit
+// Let's say someone figures out that it's EventEmitter, and uses controller#emit
 
 
 // The program WILL crash, so we put it in a try so it doesn't.
 try {
-  client.emit('joystick', 'left', 90)
+  controller.emit('joystick', 'left', 90)
 } catch (err) {
   console.error(err)
   /*
@@ -29,20 +29,20 @@ try {
 
 // But how will the program emit joystick? Easy.
 
-client.unForbidEvent('joystick')
-client.emit('joystick', 'left', 90) // The joystick is facing left, at exactly 90.
-client.forbidEvent('joystick')
+controller.unForbidEvent('joystick')
+controller.emit('joystick', 'left', 90) // The joystick is facing left, at exactly 90.
+controller.forbidEvent('joystick')
 
-// The library uses a getter only array to forbid events. The only way to change this array is client#forbidEvent and client#unForbidEvent.
+// The library uses a getter only array to forbid events. The only way to change this array is controller#forbidEvent and controller#unForbidEvent.
 
-console.log(client.forbidden) // ['joystick']
+console.log(controller.forbidden) // ['joystick']
 
-client.forbidden = ["no!"]
+controller.forbidden = ["no!"]
 
-console.log(client.forbidden) // ['joystick']
+console.log(controller.forbidden) // ['joystick']
 
 // Unfortunately, it's an array, so methods will work.
 
-client.forbidden.push("button")
+controller.forbidden.push("button")
 
-console.log(client.forbidden) // ['joystick', 'button']
+console.log(controller.forbidden) // ['joystick', 'button']
