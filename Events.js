@@ -7,6 +7,12 @@ class EventEmitter extends OldEE {
     super(options)
     forbiddenEmitEvents = forbidden || []
   }
+  get forbidden() {
+    return forbiddenEmitEvents
+  }
+  set forbidden(val) {
+    return forbiddenEmitEvents
+  }
   emit(name, ...args) {
     const arr = []
     if (forbiddenEmitEvents.includes(name)) {
